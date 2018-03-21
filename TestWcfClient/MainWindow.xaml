@@ -1,0 +1,59 @@
+﻿<Window x:Class="TestWcfClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestWcfClient"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        mc:Ignorable="d"
+        Title="WCF client" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Button Style="{StaticResource RoundCorner}" Margin="6" Name="Button" Grid.Column="1" Grid.Row="1" Command="{Binding RequestDataCommand}">Запросить данные</Button>
+        <GroupBox Grid.Row="0" Grid.Column="1" Header="Data">
+            <TextBox IsEnabled="False" Name="TextBox" Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="LostFocus">
+                        <command:EventToCommand Command="{Binding SendDataCommand, Mode=OneWay}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <TextBox.InputBindings>
+                    <KeyBinding Gesture="Enter" 
+                                Command="{Binding SendDataCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="0" Header="Get Num 1">
+            <TextBox Name="textBoxNum1" Text="{Binding Num1}" />
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="1" Header="Get Num 2">
+            <TextBox Name="textBoxNum2" Text="{Binding Num2}" />
+        </GroupBox>
+        <GroupBox Grid.Row="2" Grid.Column="2" Header="Get Num 3">
+            <TextBox Name="textBoxNum3" Text="{Binding Num3}" />
+        </GroupBox>
+        <Button Grid.Row="3" Grid.Column="0" Margin="6" Command="{Binding GetNumCommand1}" CommandParameter="{Binding Text, ElementName=textBoxNum1}">Get Num 1</Button>
+        <Button Grid.Row="3" Grid.Column="1" Margin="6" Command="{Binding GetNumCommand2}" CommandParameter="{Binding Text, ElementName=textBoxNum2}">Get Num 2</Button>
+        <Button Grid.Row="3" Grid.Column="2" Margin="6" Command="{Binding GetNumCommand3}" CommandParameter="{Binding Text, ElementName=textBoxNum3}">Get Num 3</Button>
+    </Grid>
+</Window>
